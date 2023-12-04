@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">RetrofitKotlin</string>
+    <string name="kripto_para_birimi_d">Kripto Para Birimi İd</string>
+    <string name="ad">Adı:</string>
+    <string name="kripto_para">Kripto Para:</string>
+    <string name="fiyat_1000">Fiyat: $1000</string>
+    <string name="one_hour_price">1 Saatlik Değer:</string>
+    <string name="one_day_price">1 Günlük Değer:</string>
+    <string name="one_month_price">1 Aylık Değer:</string>
+</resources>

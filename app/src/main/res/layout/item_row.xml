@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/text_crypto_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#FB0000"
+            android:text="@string/kripto_para_birimi_d" />
+
+        <!-- Yatay düzende bilgilerin bulunduğu LinearLayout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+
+            <!-- Kripto para birimi değeri -->
+            <TextView
+                android:id="@+id/text_crypto_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textColor="#FD6500"
+                android:text="@string/ad" />
+
+            <TextView
+                android:id="@+id/text_crypto_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textColor="#26FF00"
+                android:text="@string/kripto_para" />
+
+            <!-- Kripto para birimi fiyatı -->
+            <TextView
+                android:id="@+id/text_crypto_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textColor="#00FDC2"
+
+                android:text="@string/fiyat_1000" />
+
+            <TextView
+                android:id="@+id/text_crypto_volume1h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textColor="#00C2FD"
+
+                android:text="@string/one_hour_price" />
+
+            <TextView
+                android:id="@+id/text_crypto_volume1d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textColor="#0072FD"
+                android:text="@string/one_day_price" />
+
+            <TextView
+                android:id="@+id/text_crypto_volume1m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textColor="#9094E8"
+                android:text="@string/one_month_price" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</HorizontalScrollView>
