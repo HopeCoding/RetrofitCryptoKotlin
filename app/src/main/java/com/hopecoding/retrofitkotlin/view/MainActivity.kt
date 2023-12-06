@@ -13,6 +13,12 @@ import com.hopecoding.retrofitkotlin.service.CryptoAPI
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,13 +28,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewAdapter.Listener {
     private val Base_URL = "https://rest.coinapi.io/v1/"
     private var cryptoModels: ArrayList<CryptoModel>? = null
     private var recyclerViewAdapter: RecyclerViewAdapter? = null
-
+    private lateinit var job: Job
     private lateinit var binding: ActivityMainBinding
 
     //Disposable kullan at
 
-    private var compositeDisposable: CompositeDisposable? = null
-
+    // private var compositeDisposable: CompositeDisposable? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +45,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewAdapter.Listener {
         //3A9EFB1E-6C42-465A-9F53-8FA776750846
 
 
-        compositeDisposable = CompositeDisposable()
+        // compositeDisposable = CompositeDisposable()
 
         //RecylerView
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
@@ -53,8 +58,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewAdapter.Listener {
     }
 
 
-
-
     private fun loadData() {
         //Retrofitin içine RxJava kullanacağımızı belirttik.
         //Farklı farklı istekleri compositeDisposable.add şeklinde ekleyebiliyoruz.
@@ -64,6 +67,22 @@ class MainActivity : AppCompatActivity(), RecyclerViewAdapter.Listener {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build().create(CryptoAPI::class.java)
 
+        job = CoroutineScope(Dispatchers.IO).launch {
+            val response = retrofit.getData()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        cryptoModels = ArrayList(it)
+                        cryptoModels?.let {
+                            recyclerViewAdapter = RecyclerViewAdapter(it, this@MainActivity)
+                            binding.recyclerView.adapter = recyclerViewAdapter
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
         compositeDisposable?.add(
             retrofit.getData()
                 .subscribeOn(Schedulers.io())
@@ -73,7 +92,11 @@ class MainActivity : AppCompatActivity(), RecyclerViewAdapter.Listener {
                 })
         )
 
+            compositeDisposable Kullanım Yöntemi
+         */
+
         /*
+            CALL yöntemi
 
         val service = retrofit.create(CryptoAPI::class.java)
 
@@ -109,7 +132,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewAdapter.Listener {
 
 
     override fun onItemClick(cryptoModel: CryptoModel) {
-        Toast.makeText(this, "Clicked :${cryptoModel.name}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Clicked : ${cryptoModel.name}", Toast.LENGTH_SHORT).show()
     }
 
     private fun handleResponse(cryptoList: List<CryptoModel>) {
@@ -125,11 +148,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewAdapter.Listener {
     }
 
 
-
     override fun onDestroy() {
         super.onDestroy()
 
-        compositeDisposable?.clear()
+        //compositeDisposable?.clear()
+
+        job.cancel()
 
     }
 
